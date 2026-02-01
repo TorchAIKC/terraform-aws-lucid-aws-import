@@ -37,22 +37,22 @@ EOF
 # POST-BOOTSTRAP: Uncomment this block after the S3 bucket is created, then run:
 #   terragrunt init -migrate-state
 # ---------------------------------------------------------------------------------------------------------------------
-# remote_state {
-#   backend = "s3"
-#
-#   generate = {
-#     path      = "backend.tf"
-#     if_exists = "overwrite_terragrunt"
-#   }
-#
-#   config = {
-#     bucket         = local.common_vars.locals.state_bucket_name
-#     key            = "lucid-aws-import/bootstrap/state-backend/terraform.tfstate"
-#     region         = local.common_vars.locals.state_bucket_region
-#     encrypt        = true
-#     dynamodb_table = local.common_vars.locals.state_lock_table
-#   }
-# }
+remote_state {
+  backend = "s3"
+
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite_terragrunt"
+  }
+
+  config = {
+    bucket         = local.common_vars.locals.state_bucket_name
+    key            = "lucid-aws-import/bootstrap/state-backend/terraform.tfstate"
+    region         = local.common_vars.locals.state_bucket_region
+    encrypt        = true
+    dynamodb_table = local.common_vars.locals.state_lock_table
+  }
+}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # PROVIDER CONFIGURATION
