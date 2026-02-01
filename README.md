@@ -5,8 +5,34 @@ This repository contains Terraform modules to set up the necessary IAM roles and
 - **Org Read Delegation Module**: Sets up a bastion account (optionally) and delegates read access to the organization
 - **Bastion Role Module**: Sets up an IAM role in the bastion account to assume roles in member accounts for imports.
 - **Import Role Module**: Sets up an IAM role in any AWS account for Lucid to perform imports.
+- **State Backend Module**: Creates an S3 bucket and DynamoDB table for Terraform state management.
 
 For Org Level Import, all 3 modules are required. For Non-Org Level Import, only **Import Role Module** is required.
+
+## Quick Start with Terragrunt
+
+This repository includes a Terragrunt wrapper for managing deployments across multiple AWS accounts. See the [live/README.md](live/README.md) for detailed Terragrunt usage instructions.
+
+```bash
+# 1. Configure your settings in live/common.hcl
+# 2. Update account IDs in live/*/account.hcl files
+
+# Bootstrap the state backend first
+cd live/bootstrap/state-backend
+terragrunt apply
+
+# Deploy to management account (org read delegation)
+cd live/management-account/org-read-delegation
+terragrunt apply
+
+# Deploy to bastion account
+cd live/bastion-account/bastion-role
+terragrunt apply
+
+# Deploy to member accounts
+cd live/member-accounts/workload-prod/import-role
+terragrunt apply
+```
 
 ## Modules
 
